@@ -16,15 +16,18 @@ algorithmic functions. */
 /* Include the chrono algorithm for
 the delay function. */
 #include <chrono>
-/* Include the iostream library for
-input and output functionalities. */
-#include <iostream>
 /* Include the cmath library for
 the power function. */
 #include <cmath>
+/* Include the iostream library for
+input and output functionalities. */
+#include <iostream>
 /* Include the random library for
 random generators. */
 #include <random>
+/* Include the string library to
+adhere to style guidelines. */
+#include <string>
 /* Include the vector library for
 variable array structures. */
 #include <vector>
@@ -76,7 +79,7 @@ float GetCorrectString(std::string prompt, std::string targetStr, float lives) {
     /* Repeat this while the user's answer is incorrect
     and their lives are greater than 0. */  
     } while ((userStrInput != targetStr) && (lives > 0));
-    
+
     // Return the amount of lives left.
     return lives;
 }
@@ -125,7 +128,6 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
                 std::cout << BOLD << "Correct. You currently have "
                 << lives << ((lives == 1) ? "life" : "lives")
                 << "left." << WHITE << "\n";
-                
             }
         }
         /* Runs if std::stoi() could not convert the
@@ -140,7 +142,7 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
     /* Repeat this while the user's answer is incorrect
     and their lives are greater than 0. */  
     } while ((userIntInput != targetInt) && (lives > 0));
-    
+
     // Return the amount of lives left.
     return lives;
 }
@@ -172,7 +174,8 @@ float AskQuestions(const std::vector<std::vector
 
     /* Use a for loop to loop through every
     question in the specific stage list. */
-    for (int questionNum = 0; questionNum < stageEntriesCopy.size(); questionNum++) {
+    for (int questionNum = 0; questionNum < stageEntriesCopy.size();
+    questionNum++) {
         // Check if the type of the answer is a string.
         if (stageEntriesCopy[questionNum][3] == "string") {
             // Run the string question function.
@@ -180,8 +183,7 @@ float AskQuestions(const std::vector<std::vector
                 "\n" + LIGHT_BLUE + stageEntriesCopy
                 [questionNum][0] + WHITE + "\n",
                 stageEntriesCopy[questionNum][1],
-                lives
-            );
+                lives);
         } else {
             /* Otherwise, the type of the 
             answer has to be an integer. */
@@ -195,8 +197,7 @@ float AskQuestions(const std::vector<std::vector
             lives = GetCorrectInteger(
                 "\n" + LIGHT_BLUE + stageEntriesCopy
                 [questionNum][0] + WHITE + "\n",
-                integerAnswer, lives
-            );
+                integerAnswer, lives);
         }
         /* Check if the lives are
         less than or equal to zero. */
@@ -246,7 +247,7 @@ float chanceVoidEFfect(int stageNum, float lives) {
 
     // Set another random device to construct the engine.
     std::random_device randomChanceDevice;
-    // Use the mersenne twister for high-quality randomizing. 
+    // Use the mersenne twister for high-quality randomizing.
     std::mt19937 randomIntGen(randomChanceDevice());
     /* Uniformly distribute the possible integers
     over a distance of 1 to 100.*/
@@ -278,9 +279,9 @@ float chanceVoidEFfect(int stageNum, float lives) {
         /* Display the resulting effect
         description and damage dealt. */
         std::cout << "\n" << LIGHT_PURPLE << possibleEffect << ". "
-        << "You took " << effectDamage << "damage " << "and have " 
-        << lives << ((lives == 1) ? "life": "lives") << "left." 
-        << WHITE << "\n";   
+        << "You took " << effectDamage << "damage " << "and have "
+        << lives << ((lives == 1) ? "life": "lives") << "left."
+        << WHITE << "\n";
     } else {
         /* Otherwise, the random number was greater than
         the effect chance. */
@@ -295,8 +296,315 @@ float chanceVoidEFfect(int stageNum, float lives) {
 
 // Run the main function.
 int main() {
-    /* Create a 3-dimensional vector array to store all the
-    corresponding questions and answers for each of the six
-    stages. Includes types to avoid type complexity. */
+    /* Create a constant 3-dimensional vector array to store
+    all the corresponding questions and answers for each of
+    the six stages. Includes string types to avoid type complexity. */
+    const std::vector<std::vector<std::vector<std::string>>> STAGE_ENTRIES {
+        {
+            {"3 + 4 = ", "7", "int"},
+            {"Are truths and lies the same? (yes/no): ", "no", "string"},
+            {"13 - 8 = ", "5", "int"},
+        },
+        {
+            {"Is it okay to forget often...? (yes/no): ", "no", "string"},
+            {"(2 x 3) + 3 = ", "9", "int"},
+            {"1 + (12 / 12) * 12 = ", "13", "int"},
+            {"In this void, does time still exist? "
+            "(yes/no): ", "yes", "string"},
+        },
+        {
+            {"Is life supposed to be fun? (yes/no): ", "yes", "string"},
+            {"2^4 = ", "16", "int"},
+            {"5 + (3 x 4)^2 + ((10 - 2) / 2) = ", "153", "int"},
+            {"What is my name? (null/nothing/nobody): ", "null", "string"},
+            {"(2 + 1) x (3 - 2) x 16 = ", "48", "int"},
+        },
+        {
+            {"Do morals always mean good...? (yes/no): ", "no", "string"},
+            {"10 % 2 + 9^(3/6) = ", "3", "int"},
+            {"Could this all be an illusion? "
+            "(yes/no/maybe): ", "maybe", "string"},
+            {"2 x (4^9^0.5) = ", "128", "int"},
+        },
+        {
+            {"(-3 x (3 - 4)) + 31 = ", "34", "int"},
+            {"What is good to one person can be bad to another. "
+            "(yes/no): ", "yes", "string"},
+            {"(6 + 3 x 2) x 2^3 + 4 + (12-2) = ", "110", "int"},
+        },
+        {
+            {"1 + (1 % 1) - 1 + 1 + (1^0.88) / 1 - (1^1) "
+            " - 1 + 1 - (1^0.5) + 1 = ", "1", "int"},
+            {"Morality is complex and everyone sees it differently. "
+            " (yes/no): ", "yes", "string"},
+        },
+    };
+
+    /* Create a constant 3-dimensional list to store all
+    the corresponding dialogue lines and delay times for
+    each of the six story parts. Assume delay types are
+    string to avoid type complexity. */
+    const std::vector<std::vector<std::vector<std::string>>> STAGE_DIALOGUES {
+        {
+            {
+                "\nYou are in a void of space, yet you still can breathe. "
+                "You are confused. What is all this?",
+                "2",
+            },
+            {"Null: ...", "2"},
+            {"User: Who... are you?", "2.5"},
+            {"Null: I am null.", "2.5"},
+            {"User: Null? As in nothing?", "2.5"},
+            {
+                "Null: Well, sort of. "
+                "I forgot my name and practically everything else, "
+                "so that is what I go by.",
+                "2.5",
+            },
+            {"User: Wow... may I ask why I'm here?", "2.5"},
+            {
+                "Null: I do not know. "
+                "People just spawn here like this is "
+                "some sort of dimension.",
+                "3",
+            },
+            {"User: So I'm stuck here forever???", "2.5"},
+            {
+                "Null: No. Others managed to leave, "
+                "some shorter than the others. "
+                "I would tell my story, and most of them would "
+                "just disappear before I even finish it.",
+                "3",
+            },
+            {"User: Ah... wait, story? You have a backstory?", "2"},
+            {
+                "Null: Yes. I would be happy to share it.",
+                "2.5",
+            },
+            {
+                "User: Sure! It's not like I have anything else to do... "
+                "Tell me what happened to you and how you got here.",
+                "3",
+            },
+            {"Null: Alright.", "1.5"},
+            {".", "0.75"},
+            {".", "1"},
+            {".", "1.5"},
+            {
+                "It was a sunny day outside. The birds were chirping, "
+                "flowers were blooming, and the scattered breezes made\nit all "
+                "the more pleasant.",
+                "3.5",
+            },
+            {
+                "I felt like I could stay in this happy state forever. "
+                "As I lay on the seemingly endless field of grass and flowers, "
+                "it felt like I was one with nature.",
+                "3.5",
+            },
+            {
+                "I would attend to school, do my work, "
+                "and look forward to the next day.",
+                "3"
+            },
+            {
+                "I repeated this routine daily, quickly eating my breakfast "
+                "so I could go outside early and run to the large field, "
+                "just to experience that feeling over and over again.",
+                "3.5",
+            },
+            {
+                "However, as days passed, everything "
+                "got weirder and less exciting.",
+                "3"
+            },
+            {
+                "I still went to the field, but I could "
+                "not make the same connections, ever.",
+                "3",
+            },
+            {
+                "I thought it was normal and the weather "
+                "changes had to do with it, but even doing "
+                "work and attending classes got harder.",
+                "3.5",
+            },
+            {"It was...", "2.5"},
+        },
+        {
+            {"...ME. It was me.", "2.5"},
+            {
+                "I was losing touch. My memory started receding, "
+                "and I silently panicked in my\n"
+                "head, fighting endless battles against my "
+                "diminishing neurons.",
+                "3.5",
+            },
+            {
+                "Things were blurry, and my grades "
+                "were hitting an all-time low.",
+                "3.5"
+            },
+            {
+                "I tried to make up for them by working "
+                "extra time, but it did not do\n"
+                "anything but add on to my confusion and distress.",
+                "3.5",
+            },
+            {
+                "Asking my parents for help because "
+                "I forgot how to do simple tasks "
+                "made them very concerned.",
+                "3.5",
+            },
+            {
+                "The final nail in the coffin was genuinely "
+                "asking my parents\nhow to make a "
+                "grilled cheese sandwich, which is what I "
+                "always prepare for lunch.",
+                "3.5",
+            },
+            {
+                "They looked at me fearfully, and that "
+                "was when I got sent to the hospital.",
+                "3.5",
+            },
+        },
+        {
+            {
+                "Most other people outside of the hospital "
+                "held the same feelings. Not even the neurologists "
+                "could find anything wrong,\nand they looked at each other, "
+                "baffled. This was not some typical condition.",
+                "3.5",
+            },
+            {"It was like a nightmare, especially for my parents.", "2.5"},
+            {
+                "It is excruciatingly painful when your "
+                "own child suddenly does not remember "
+                "anything about you anymore.\nI saw those "
+                "feelings etched on my parents faces as "
+                "tears freely flowed from their faces.",
+                "3.5",
+            },
+            {
+                "My parents urged the other doctors to "
+                "do something, but it was to no avail.",
+                "3",
+            },
+            {
+                "Family, friends, work, the flower field, "
+                "and routine, all forgotten. That was "
+                "when I completely faded and ceased to live.",
+                "3",
+            },
+        },
+        {
+            {
+                "I escaped out of my own body for a "
+                "short period of time, being able to see "
+                "the reaction of my parents and other friends."
+                "\nIt was heartbreaking, but I "
+                "did not have a heart anymore.",
+                "3.5",
+            },
+            {
+                "After that short period of time, I "
+                "could only see black and some distant dots.",
+                "3",
+            },
+            {
+                "I came to realize I was in what "
+                "looked like outer space with stars, "
+                "but I did not know why.",
+                "3",
+            },
+            {
+                "I could feel my own body and "
+                "breathe, unaffected by being "
+                "present in this empty space.",
+                "3",
+            },
+            {
+                "Maybe this was a reflection of "
+                "my diminishing memories, or not. I "
+                "never felt like connecting all the pieces.",
+                "4",
+            },
+            {
+                "Being able to tell this story "
+                "multiple times was surprising. It's "
+                "like some instance of\nmyself that "
+                "somewhat wasn't affected "
+                "by forgetfulness was reloaded.",
+                "3.5",
+            },
+        },
+        {
+            {
+                "I could not count time, do work, "
+                "play, or go to the fields anymore. "
+                "All I could do was\nreflect and "
+                "contemplate in this VOID.",
+                "3.5",
+            },
+            {"There were no feelings, but that would change.", "3"},
+            {
+                "Once I saw someone appear in my 'realm,' I got scared "
+                "for some reason, thinking how it was possible.",
+                "3",
+            },
+            {
+                "People were able to fade out of my realm as well "
+                "since they were still connected\nto their living selves, "
+                "unlike me.",
+                "3.5",
+            },
+            {
+                "However, every person that managed to crawl into my space "
+                "seemed to have the same feelings of loss and forgetfulness.",
+                "3",
+            },
+            {
+                "I could immediately connect myself to them, just like how I "
+                "felt when I embraced nature on what seemed like the "
+                "perfect day.",
+                "3.5",
+            },
+            {
+                "Knowing that, I wished them the best as "
+                "they faded, and decided to "
+                "keep contemplating until someone else appeared.",
+                "3.5",
+            },
+            {
+                "Those gaps in time seemed long, "
+                "although it felt like I was being "
+                "impatient. I was grateful, anyway.\n"
+                "Even if they faded sooner than "
+                "I expected, I still sighed in relief, "
+                "every time.",
+                "4",
+            },
+            {
+                "And I will sigh in relief again "
+                "once you manage to fade, user.",
+                "3.5"
+            },
+        },
+        {
+            {
+                "Every day, hour, minute, second, "
+                "millisecond, without any doubt, "
+                "I will have to embrace the\n"
+                "everlasting confusion and void feelings "
+                "that wander about in my head.",
+                "3.5",
+            },
+            {"...ha.", "3.5"},
+        },
+    };
+
+    
 
 }
