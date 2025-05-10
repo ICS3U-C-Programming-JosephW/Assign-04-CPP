@@ -78,8 +78,8 @@ float GetCorrectString(std::string prompt, std::string targetStr, float lives) {
             /* Display to the user that they were correct,
             along with their resulting lives. */
             std::cout << BOLD << "Correct. You currently have "
-            << lives << ((lives == 1) ? " life " : " lives ")
-            << "left." << WHITE << "\n";
+            << lives << ((lives == 1) ? " life." : " lives.")
+            << WHITE << "\n";
         }
     /* Repeat this while the user's answer is incorrect
     and their lives are greater than 0. */  
@@ -100,6 +100,9 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
     /* Declare the user's answer as
     an actual integer. */
     int userIntInput;
+    /* Initialize a position 
+    tracker of the size type. */
+    size_t intPosition = 0;
 
     /* Construct a do..while loop to always
     run the question prompt at least once. */
@@ -111,11 +114,10 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
 
         // Try to validate and proceed with the user input.
         try {
-            // Initialize a position tracker of the size type.
-            size_t intPosition = 0;
             /* Attempt to convert the entered string into
             an integer and get the captured size. */
             userIntInput = std::stoi(userIntInputStr, &intPosition);
+            std::cout << intPosition;
 
             /* Check if the raw size entered by the user is equal
             to the size of the successful conversion of std::stoi(). */
@@ -136,8 +138,8 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
                     /* Display to the user that they were correct,
                     along with their resulting lives. */
                     std::cout << BOLD << "Correct. You currently have "
-                    << lives << ((lives == 1) ? " life " : " lives ")
-                    << "left." << WHITE << "\n";
+                    << lives << ((lives == 1) ? " life." : " lives.")
+                    << WHITE << "\n";
                 }
             } else {
                 /* Otherwise, the user did not enter a true
@@ -158,9 +160,19 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
             << " is not a valid integer. Try again."
             << WHITE << "\n";
         }
-    /* Repeat this while the user's answer is incorrect
-    and their lives are greater than 0. */  
-    } while ((userIntInput != targetInt) && (lives > 0));
+        /* Runs if std::stoi() detected the
+        integer entered was too large. */
+        catch (std::out_of_range) {
+            /* Display to the user that they
+            entered an integer too large. */
+            std::cout << BOLD << userIntInput
+            << " is too large of an integer. "
+            "Try again." << WHITE << "\n";
+        }
+    /* Repeat this while the user's answer is incorrect or they did
+    not enter an integer, and their lives are greater than 0. */  
+    } while (((userIntInput != targetInt) ||
+    (intPosition != userIntInputStr.length())) && (lives > 0));
 
     // Return the amount of lives left.
     return lives;
@@ -354,7 +366,7 @@ int main() {
             {"1 + (1 % 1) - 1 + 1 + (1^0.88) / 1 - (1^1) "
             " - 1 + 1 - (1^0.5) + 1 = ", "1", "int"},
             {"Morality is complex and everyone sees it differently. "
-            " (yes/no): ", "yes", "string"},
+            "(yes/no): ", "yes", "string"},
         },
     };
 
