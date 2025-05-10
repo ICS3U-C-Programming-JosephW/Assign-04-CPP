@@ -36,8 +36,10 @@ variable array structures. */
 #include <vector>
 
 /* Global constant for text colour
-reset. The only shared constant. */
-const std::string WHITE = "\033[0m";
+reset. The only shared constant.
+Make it an array of characters
+to adhere to style guidelines. */
+const char WHITE[] = "\033[0m";
 
 /* Define a function to help get the correct
 string answer from the user input. */
@@ -76,7 +78,7 @@ float GetCorrectString(std::string prompt, std::string targetStr, float lives) {
             /* Display to the user that they were correct,
             along with their resulting lives. */
             std::cout << BOLD << "Correct. You currently have "
-            << lives << ((lives == 1) ? "life" : "lives")
+            << lives << ((lives == 1) ? " life " : " lives ")
             << "left." << WHITE << "\n";
         }
     /* Repeat this while the user's answer is incorrect
@@ -109,28 +111,42 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
 
         // Try to validate and proceed with the user input.
         try {
-            /* Attempt to convert the entered
-            string into an integer. */
-            userIntInput = std::stoi(userIntInputStr);
+            // Initialize a position tracker of the size type.
+            size_t intPosition = 0;
+            /* Attempt to convert the entered string into
+            an integer and get the captured size. */
+            userIntInput = std::stoi(userIntInputStr, &intPosition);
 
-            /* Check if the user entered an input that did
-            not match the answer, meaning it was incorrect. */
-            if (userIntInput != targetInt) {
-                /* Take away one life from the user
-                and keep it from going below zero. */
-                lives = std::max(lives - 1.0f, 0.0f);
+            /* Check if the raw size entered by the user is equal
+            to the size of the successful conversion of std::stoi(). */
+            if (intPosition == userIntInputStr.length()) {
+                /* Check if the user entered an input that did
+                not match the answer, meaning it was incorrect. */
+                if (userIntInput != targetInt) {
+                    /* Take away one life from the user
+                    and keep it from going below zero. */
+                    lives = std::max(lives - 1.0f, 0.0f);
 
-                /* Display to the user that they were incorrect,
-                along with their resulting lives. */
-                std::cout << BOLD << "Incorrect, you lost one life "
-                << "and have " << lives << " left." << WHITE << "\n";
+                    /* Display to the user that they were incorrect,
+                    along with their resulting lives. */
+                    std::cout << BOLD << "Incorrect, you lost one life "
+                    << "and have " << lives << " left." << WHITE << "\n";
+                } else {
+                    // Otherwise, the user answered correctly.
+                    /* Display to the user that they were correct,
+                    along with their resulting lives. */
+                    std::cout << BOLD << "Correct. You currently have "
+                    << lives << ((lives == 1) ? " life " : " lives ")
+                    << "left." << WHITE << "\n";
+                }
             } else {
-                // Otherwise, the user answered correctly.
-                /* Display to the user that they were correct,
-                along with their resulting lives. */
-                std::cout << BOLD << "Correct. You currently have "
-                << lives << ((lives == 1) ? "life" : "lives")
-                << "left." << WHITE << "\n";
+                /* Otherwise, the user did not enter a true
+                integer and they added characters after it. */
+                /* Display to the user that the integer input
+                was invalid and that they must try again. */
+                std::cout << BOLD << userIntInputStr
+                << " is not a valid integer. Try again."
+                << WHITE << "\n";
             }
         }
         /* Runs if std::stoi() could not convert the
@@ -176,21 +192,20 @@ float AskQuestions(const std::vector<std::vector
     << WHITE << "\n";
 
     /* Use a for loop to loop through every
-    question in the specific stage list. */
+    question in the specific stage array. */
     for (int questionNum = 0; questionNum < stageEntriesCopy.size();
     questionNum++) {
         // Check if the type of the answer is a string.
-        if (stageEntriesCopy[questionNum][3] == "string") {
+        if (stageEntriesCopy[questionNum][2] == "string") {
             // Run the string question function.
             lives = GetCorrectString(
                 "\n" + LIGHT_BLUE + stageEntriesCopy
-                [questionNum][0] + WHITE + "\n",
+                [questionNum][0] + WHITE,
                 stageEntriesCopy[questionNum][1],
                 lives);
         } else {
             /* Otherwise, the type of the 
             answer has to be an integer. */
-
             /* Convert the integer answer
             as a string to an integer. */
             int integerAnswer = std::stoi(
@@ -199,7 +214,7 @@ float AskQuestions(const std::vector<std::vector
             // Run the integer question function.
             lives = GetCorrectInteger(
                 "\n" + LIGHT_BLUE + stageEntriesCopy
-                [questionNum][0] + WHITE + "\n",
+                [questionNum][0] + WHITE,
                 integerAnswer, lives);
         }
         /* Check if the lives are
@@ -217,8 +232,8 @@ float AskQuestions(const std::vector<std::vector
 /* Define a function to generate a possible
 void effect which challenges the user. */
 float ChanceVoidEFfect(int stageNum, float lives) {
-    /* Declare the constant void
-    effects array as a vector. */
+    /* Set a constant void effects array containing
+    various effect descriptions as a vector. */
     const std::vector<std::string> VOID_EFFECTS = {
         "The distant stars glare at the unfamiliar "
         "figure that is you, setting you ablaze internally",
@@ -261,7 +276,7 @@ float ChanceVoidEFfect(int stageNum, float lives) {
     if (intDist(randomIntGen) <= effectChance) {
         /* Uniformly distribute the possible integers
         over a distance of 0 to the array size
-        subtracted by one. */
+        subtracted by one to generate a random index. */
         std::uniform_int_distribution<int>
         effectDist(0, VOID_EFFECTS.size() - 1);
 
@@ -282,15 +297,15 @@ float ChanceVoidEFfect(int stageNum, float lives) {
         /* Display the resulting effect
         description and damage dealt. */
         std::cout << "\n" << LIGHT_PURPLE << possibleEffect << ". "
-        << "You took " << effectDamage << "damage " << "and have "
-        << lives << ((lives == 1) ? "life": "lives") << "left."
-        << WHITE << "\n";
+        << "You took " << effectDamage << " damage " << "and have "
+        << lives << ((lives == 1) ? " life ": " lives ") << "left."
+        << WHITE << "\n\n";
     } else {
         /* Otherwise, the random number was greater than
         the effect chance. */
         // Display to the user that they are unaffected.
         std::cout << "\n" << LIGHT_PURPLE << "You remain unaffected "
-        << "in the seemingly soundless void." << WHITE << "\n";
+        << "in the seemingly soundless void." << WHITE << "\n\n";
     }
     /* Return the lives at the end if the function
     was able to avoid the early return statement. */
@@ -301,7 +316,7 @@ float ChanceVoidEFfect(int stageNum, float lives) {
 int main() {
     /* Create a constant 3-dimensional vector array to store
     all the corresponding questions and answers for each of
-    the six stages. Includes string types to avoid type complexity. */
+    the six stages. Includes literal types to avoid type complexity. */
     const std::vector<std::vector<std::vector<std::string>>> STAGE_ENTRIES {
         {
             {"3 + 4 = ", "7", "int"},
@@ -343,8 +358,8 @@ int main() {
         },
     };
 
-    /* Create a constant 3-dimensional list to store all
-    the corresponding dialogue lines and delay times for
+    /* Create another constant 3-dimensional vector array to store
+    all the corresponding dialogue lines and delay times for
     each of the six story parts. Assume delay types are
     string to avoid type complexity. */
     const std::vector<std::vector<std::vector<std::string>>> STAGE_DIALOGUES {
@@ -632,13 +647,12 @@ int main() {
         lineNum++) {
             // Display the line of dialogue based on the current line number.
             std::cout << DARK_GRAY << STAGE_DIALOGUES[baseStageNum][lineNum][0]
-            << WHITE << "\n";
+            << WHITE << "\n\n";
             /* Delay the whole program based on the corresponding
             dialogue line for dynamic pacing. Convert the string
-            delay time into an integer to use it. */
-            std::this_thread::sleep_for(std::chrono::seconds(
-                std::stoi(STAGE_DIALOGUES[baseStageNum][lineNum][1])
-            ));
+            delay time into a float to use it. */
+            std::this_thread::sleep_for(std::chrono::duration<float>(
+            std::stof(STAGE_DIALOGUES[baseStageNum][lineNum][1])));
         }
 
         /* Ask the user questions depending on their base stage number
@@ -691,7 +705,7 @@ int main() {
     } else {
         // Otherwise, the user is dead.
         // Display the game over message.
-        std::cout << LIGHT_RED << ". . . You have faltered under the void. "
+        std::cout << LIGHT_RED << "\n. . . You have faltered under the void. "
         << "Who knows, maybe this was all just an illusion." << WHITE << "\n";
     }
 }
