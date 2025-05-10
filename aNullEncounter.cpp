@@ -10,15 +10,18 @@ must endure the harmful environment of
 the void and answer stages of questions
 to win. */
 
-/* Include the iostream library for
-input and output functionalities. */
-#include <iostream>
 /* Include the algorithm library for
 algorithmic functions. */
 #include <algorithm>
 /* Include the chrono algorithm for
 the delay function. */
 #include <chrono>
+/* Include the iostream library for
+input and output functionalities. */
+#include <iostream>
+/* Include the vector library for
+variable multi-dimensional structures. */
+#include <vector>
 
 /* Global constant for text colour
 reset. The only shared constant. */
@@ -135,6 +138,11 @@ int targetInt, float lives) {
     } while ((userIntInput != targetInt) && (lives > 0));
     
     // Return the amount of lives left.
+    return lives;
+}
+
+// Define a function to loop through stage questions.
+float AskQuestions(const std::vector<std::vector<std::string>> &stageEntries, float lives) {
     return lives;
 }
 
