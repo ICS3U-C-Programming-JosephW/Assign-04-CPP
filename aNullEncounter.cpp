@@ -13,7 +13,7 @@ to win. */
 /* Include the algorithm library for
 algorithmic functions. */
 #include <algorithm>
-/* Include the chrono algorithm for
+/* Include the chrono library for
 the delay function. */
 #include <chrono>
 /* Include the cmath library for
