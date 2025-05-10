@@ -73,6 +73,71 @@ std::string targetStr, float lives) {
     return lives;
 }
 
+/* Define a function to help get the correct
+integer answer from the user input. */
+float GetCorrectInteger(std::string prompt,
+int targetInt, float lives) {
+    // Set a constant for bold text.
+    const std::string BOLD = "\033[1m";
+    /* Declare the user's integer answer
+    as a string. */
+    std::string userIntInputStr;
+    /* Declare the user's answer as
+    an actual integer. */
+    int userIntInput;
+
+    /* Construct a do..while loop to always
+    run the question prompt at least once. */
+    do {
+        // Display the prompt to the user.
+        std::cout << prompt;
+        // Get the user's integer answer as a string.
+        std::getline(std::cin, userIntInputStr);
+
+        // Try to validate and proceed with the user input.
+        try {
+            /* Attempt to convert the entered
+            string into an integer. */
+            userIntInput = std::stoi(userIntInputStr);
+
+            /* Check if the user entered an input that did
+            not match the answer, meaning it was incorrect. */
+            if (userIntInput != targetInt) {
+                /* Take away one life from the user
+                and keep it from going below zero. */
+                lives = std::max(lives - 1.0f, 0.0f);
+
+                /* Display to the user that they were incorrect,
+                along with their resulting lives. */
+                std::cout << BOLD << "Incorrect, you lost one life "
+                << "and have " << lives << " left." << WHITE << "\n";
+            } else {
+                // Otherwise, the user answered correctly.
+                /* Display to the user that they were correct,
+                along with their resulting lives. */
+                std::cout << BOLD << "Correct. You currently have "
+                << lives << ((lives == 1) ? "life" : "lives")
+                << "left." << WHITE << "\n";
+                
+            }
+        }
+        /* Runs if std::stoi() could not convert the
+        user's string input into an integer. */
+        catch (std::invalid_argument) {
+            /* Display to the user that they
+            did not enter a valid integer. */
+            std::cout << BOLD << userIntInputStr
+            << " is not a valid integer. Try again."
+            << WHITE << "\n";
+        }
+    /* Repeat this while the user's answer is incorrect
+    and their lives are greater than 0. */  
+    } while ((userIntInput != targetInt) && (lives > 0));
+    
+    // Return the amount of lives left.
+    return lives;
+}
+
 // Runs the main function.
 int main() {
 
