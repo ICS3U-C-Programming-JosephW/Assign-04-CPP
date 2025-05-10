@@ -28,6 +28,9 @@ random generators. */
 /* Include the string library to
 adhere to style guidelines. */
 #include <string>
+/* Include the thread library to 
+alter threads. */
+#include <thread>
 /* Include the vector library for
 variable array structures. */
 #include <vector>
@@ -150,7 +153,7 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
 // Define a function to loop through stage questions.
 float AskQuestions(const std::vector<std::vector
 <std::string>> &STAGE_ENTRIES, float lives) {
-    // Set a constant for blue text.
+    // Set a constant for light blue text.
     const std::string LIGHT_BLUE = "\033[1;34m";
 
     /* Copy the stage entries array by
@@ -213,7 +216,7 @@ float AskQuestions(const std::vector<std::vector
 
 /* Define a function to generate a possible
 void effect which challenges the user. */
-float chanceVoidEFfect(int stageNum, float lives) {
+float ChanceVoidEFfect(int stageNum, float lives) {
     /* Declare the constant void
     effects array as a vector. */
     const std::vector<std::string> VOID_EFFECTS = {
@@ -230,7 +233,7 @@ float chanceVoidEFfect(int stageNum, float lives) {
         "Lingering in this void makes you feel unwell, "
         "and you somewhat feel like leaving",
     };
-    // Set a constant for purple text.
+    // Set a constant for light purple text.
     const std::string LIGHT_PURPLE = "\033[1;35m";
 
     /* Determine the chance of the effect taking
@@ -604,7 +607,91 @@ int main() {
             {"...ha.", "3.5"},
         },
     };
+    /* Set constants for dark gray, light
+    green, and light red text. */
+    const std::string DARK_GRAY = "\033[1;30m",
+    LIGHT_GREEN = "\033[1;32m",
+    LIGHT_RED = "\033[1;31m";
 
-    
+    /* Set the user's current lives to
+    25, which can change overtime. */
+    float userCurrentLives = 25;
 
+    // Loop through all the stage entries.
+    for (int baseStageNum = 0; baseStageNum < STAGE_ENTRIES.size();
+    baseStageNum++) {
+        // Check if the user's lives are zero or less.
+        if (userCurrentLives <= 0) {
+            // Break the loop.
+            break;
+        }
+        /* Nest a for loop inside to loop through all
+        the dialogue lines before the corresponding
+        stage entries. */
+        for (int lineNum = 0; lineNum < STAGE_DIALOGUES[baseStageNum].size();
+        lineNum++) {
+            // Display the line of dialogue based on the current line number.
+            std::cout << DARK_GRAY << STAGE_DIALOGUES[baseStageNum][lineNum][0]
+            << WHITE << "\n";
+            /* Delay the whole program based on the corresponding
+            dialogue line for dynamic pacing. Convert the string
+            delay time into an integer to use it. */
+            std::this_thread::sleep_for(std::chrono::seconds(
+                std::stoi(STAGE_DIALOGUES[baseStageNum][lineNum][1])
+            ));
+        }
+
+        /* Ask the user questions depending on their base stage number
+        and assign their remaining lives to their current lives. */
+        userCurrentLives = AskQuestions(STAGE_ENTRIES[baseStageNum],
+        userCurrentLives);
+
+        /* Generate a possible void effect based on the user's actual
+        stage number and assign their remaining lives to their current
+        lives. */
+        userCurrentLives = ChanceVoidEFfect(baseStageNum + 1,
+        userCurrentLives);
+    }
+
+    /* After the loop, do a final check to
+    determine whether the user is alive. */
+    if (userCurrentLives > 0) {
+        // Display the winning dialogue with pacing.
+        std::cout << LIGHT_GREEN << "Null: Well, that is the extent of "
+        << "my story that continues to decline in quality.\n"
+        << "Your resolve allowed you to endure these harsh "
+        << "conditions, and I am glad you were able to listen."
+        << WHITE << "\n\n";
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+
+        std::cout << LIGHT_GREEN << "User: I am sorry for this."
+        << WHITE << "\n\n";
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+
+        std::cout << LIGHT_GREEN << "Null: Why? I do not mind wandering "
+        << "here. It is like my heaven, sort of..." << WHITE << "\n\n";
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+
+        std::cout << LIGHT_GREEN << "User: This place... heaven? Wait... "
+        << "I am fading, just like you said!" << WHITE << "\n\n";
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+
+        std::cout << LIGHT_GREEN << "Null: Yes. I did not want this to "
+        << "happen so soon, but you are heading back to the real world. "
+        << "Farewell, my friend." << WHITE << "\n\n";
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+
+        std::cout << LIGHT_GREEN << "User: Farewell, null."
+        << WHITE << "\n\n";
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+
+        std::cout << LIGHT_GREEN << "Null continues to wander, "
+        << "hopeful for the next person... The end."<< WHITE << "\n";
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+    } else {
+        // Otherwise, the user is dead.
+        // Display the game over message.
+        std::cout << LIGHT_RED << ". . . You have faltered under the void. "
+        << "Who knows, maybe this was all just an illusion." << WHITE << "\n";
+    }
 }
