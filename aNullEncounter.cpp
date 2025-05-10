@@ -20,12 +20,19 @@ algorithmic functions. */
 the delay function. */
 #include <chrono>
 
+/* Global constant for text colour
+reset. The only shared constant. */
+const std::string WHITE = "\033[0m";
+
 /* Define a function to help get the correct
 string answer from the user input. */
 float GetCorrectString(std::string prompt,
 std::string targetStr, float lives) {
+    // Set a constant for bold text.
+    const std::string BOLD = "\033[1m";
     // Declare the user's string answer.
     std::string userStrInput;
+
     /* Construct a do..while loop to always
     run the question prompt at least once. */
     do {
@@ -41,10 +48,32 @@ std::string targetStr, float lives) {
 
         /* Check if the user entered an input that did
         not match the answer, meaning it was incorrect. */
-        
+        if (userStrInput != targetStr) {
+            /* Take away one life from the user
+            and keep it from going below zero. */
+            lives = std::max(lives - 1.0f, 0.0f);
 
-    } while (true);
+            /* Display to the user that they were incorrect,
+            along with their resulting lives. */
+            std::cout << BOLD << "Incorrect, you lost one life "
+            << "and have " << lives << " left." << WHITE << "\n";
+        } else {
+            // Otherwise, the user answered correctly.
+            /* Display to the user that they were correct,
+            along with their resulting lives. */
+            std::cout << BOLD << "Correct. You currently have "
+            << lives << ((lives == 1) ? "life" : "lives")
+            << "left." << WHITE << "\n";
+        }
+    /* Repeat this while the user's answer is incorrect
+    and their lives are greater than 0. */  
+    } while ((userStrInput != targetStr) && (lives > 0));
+    
+    // Return the amount of lives left.
+    return lives;
 }
 
 // Runs the main function.
-int main() {}
+int main() {
+
+}
