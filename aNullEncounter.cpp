@@ -19,8 +19,11 @@ the delay function. */
 /* Include the iostream library for
 input and output functionalities. */
 #include <iostream>
+/* Include the random library for
+random generators. */
+#include <random>
 /* Include the vector library for
-variable multi-dimensional structures. */
+variable array structures. */
 #include <vector>
 
 /* Global constant for text colour
@@ -29,8 +32,7 @@ const std::string WHITE = "\033[0m";
 
 /* Define a function to help get the correct
 string answer from the user input. */
-float GetCorrectString(std::string prompt,
-std::string targetStr, float lives) {
+float GetCorrectString(std::string prompt, std::string targetStr, float lives) {
     // Set a constant for bold text.
     const std::string BOLD = "\033[1m";
     // Declare the user's string answer.
@@ -78,8 +80,7 @@ std::string targetStr, float lives) {
 
 /* Define a function to help get the correct
 integer answer from the user input. */
-float GetCorrectInteger(std::string prompt,
-int targetInt, float lives) {
+float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
     // Set a constant for bold text.
     const std::string BOLD = "\033[1m";
     /* Declare the user's integer answer
@@ -142,7 +143,40 @@ int targetInt, float lives) {
 }
 
 // Define a function to loop through stage questions.
-float AskQuestions(const std::vector<std::vector<std::string>> &stageEntries, float lives) {
+float AskQuestions(const std::vector<std::vector
+<std::string>> &STAGE_ENTRIES, float lives) {
+    // Set a constant for blue text.
+    const std::string LIGHT_BLUE = "\033[1;34m";
+
+    /* Copy the stage entries array by
+    assignment to safely modify it. */
+    std::vector<std::vector<std::string>>
+    stageEntriesCopy = STAGE_ENTRIES;
+
+    // Set a random device to construct the engine.
+    std::random_device randomDevice;
+    /* Use the mersenne twister
+    for high-quality randomizing. */ 
+    std::mt19937 mersenneTwister(randomDevice());
+
+    // Shuffle the array copy for randomized questions.
+    std::shuffle(stageEntriesCopy.begin(),
+    stageEntriesCopy.end(), mersenneTwister);
+
+    // Display the initial line for any stage.
+    std::cout << LIGHT_BLUE << "Let us see..."
+    << WHITE << "\n";
+
+    /* Use a for loop to loop through every
+    question in the specific stage list. */
+    for (int questionNum = 0; questionNum < stageEntriesCopy.size(); questionNum++) {
+        if (stageEntriesCopy[questionNum][3] == "string") {
+            
+        }
+      
+    }
+    
+
     return lives;
 }
 
