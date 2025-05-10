@@ -150,23 +150,14 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
                 << WHITE << "\n";
             }
         }
-        /* Runs if std::stoi() could not convert the
-        user's string input into an integer. */
-        catch (std::invalid_argument) {
+        /* Runs if any exceptions arise from
+        std::stoi(). */
+        catch (std::exception) {
             /* Display to the user that they
             did not enter a valid integer. */
             std::cout << BOLD << userIntInputStr
             << " is not a valid integer. Try again."
             << WHITE << "\n";
-        }
-        /* Runs if std::stoi() detected the
-        integer entered was too large. */
-        catch (std::out_of_range) {
-            /* Display to the user that they
-            entered an integer too large. */
-            std::cout << BOLD << userIntInput
-            << " is too large of an integer. "
-            "Try again." << WHITE << "\n";
         }
     /* Repeat this while the user's answer is incorrect or they did
     not enter an integer, and their lives are greater than 0. */  
