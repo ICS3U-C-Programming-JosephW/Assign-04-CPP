@@ -117,7 +117,6 @@ float GetCorrectInteger(std::string prompt, int targetInt, float lives) {
             /* Attempt to convert the entered string into
             an integer and get the captured size. */
             userIntInput = std::stoi(userIntInputStr, &intPosition);
-            std::cout << intPosition;
 
             /* Check if the raw size entered by the user is equal
             to the size of the successful conversion of std::stoi(). */
