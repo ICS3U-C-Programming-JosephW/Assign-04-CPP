@@ -170,13 +170,40 @@ float AskQuestions(const std::vector<std::vector
     /* Use a for loop to loop through every
     question in the specific stage list. */
     for (int questionNum = 0; questionNum < stageEntriesCopy.size(); questionNum++) {
+        // Check if the type of the answer is a string.
         if (stageEntriesCopy[questionNum][3] == "string") {
-            
+            // Run the string question function.
+            lives = GetCorrectString(
+                "\n" + LIGHT_BLUE + stageEntriesCopy
+                [questionNum][0] + WHITE + "\n",
+                stageEntriesCopy[questionNum][1],
+                lives
+            );
+        } else {
+            /* Otherwise, the type of the 
+            answer has to be an integer. */
+
+            /* Convert the integer answer
+            as a string to an integer. */
+            int integerAnswer = std::stoi(
+            stageEntriesCopy[questionNum][1]);
+
+            // Run the integer question function.
+            lives = GetCorrectInteger(
+                "\n" + LIGHT_BLUE + stageEntriesCopy
+                [questionNum][0] + WHITE + "\n",
+                integerAnswer, lives
+            );
         }
-      
+        /* Check if the lives are
+        less than or equal to zero. */
+        if (lives <= 0) {
+            // Break the loop.
+            break;
+        }
     }
     
-
+    // Return the amount of lives left.
     return lives;
 }
 
