@@ -233,7 +233,7 @@ float AskQuestions(const std::vector<std::vector
 
 /* Define a function to generate a possible
 void effect which challenges the user. */
-float ChanceVoidEFfect(int stageNum, float lives) {
+float ChanceVoidEffect(int stageNum, float lives) {
     /* Set a constant void effects array containing
     various effect descriptions as a vector. */
     const std::vector<std::string> VOID_EFFECTS = {
@@ -665,7 +665,7 @@ int main() {
         /* Generate a possible void effect based on the user's actual
         stage number and assign their remaining lives to their current
         lives. */
-        userCurrentLives = ChanceVoidEFfect(baseStageNum + 1,
+        userCurrentLives = ChanceVoidEffect(baseStageNum + 1,
         userCurrentLives);
     }
 
